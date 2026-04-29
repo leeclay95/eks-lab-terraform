@@ -404,7 +404,7 @@ resource "aws_security_group" "allow_rdp" {
     from_port   = 3389
     to_port     = 3389
     protocol    = "tcp"
-    cidr_blocks = ["67.176.20.158/32"]
+    cidr_blocks = ["yourip/32"]
   }
 
   egress {
