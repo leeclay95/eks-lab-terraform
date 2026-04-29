@@ -287,7 +287,7 @@ The MySQL `Service` name is `mysql.stigman.svc.cluster.local` — this is the va
 | STIGman — full admin | `stigmanager` | `stigmanager` |
 | STIGman — collection manager | `collection` | `collection` |
 | STIGman — basic user | `lvl1` | `lvl1` |
-| Keycloak admin console | `admin` | `password` |
+| Keycloak admin console | `admin` | `pa55w0rd` |
 | MySQL root | `root` | `rootpw` |
 | MySQL app user | `stigman` | `stigman` |
 | Windows jump box | `Administrator` | (decrypt from AWS console) |
