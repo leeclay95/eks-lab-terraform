@@ -30,13 +30,13 @@ spec:
         - name: STIGMAN_DB_SCHEMA
           value: "stigman"
         - name: STIGMAN_OIDC_PROVIDER
-          value: "https://internal-k8s-keycloak-keycloak-82ca930d80-218690444.us-east-2.elb.amazonaws.com/realms/stigman"
+          value: "https://internal-k8s-keycloak-keycloak-uuid.us-east-2.elb.amazonaws.com/realms/stigman"
         - name: STIGMAN_API_PORT
           value: "54000"
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: "0"
         - name: STIGMAN_API_BASE_URL
-          value: "https://internal-k8s-stigman-stigmani-334e5a3921-470235457.us-east-2.elb.amazonaws.com"
+          value: "https://internal-k8s-stigman-stigmani-uuid.us-east-2.elb.amazonaws.com"
         resources:
           requests:
             memory: "512Mi"
@@ -66,7 +66,7 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/scheme: internal
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-2:969958573430:certificate/f47858d4-8ca2-4557-bb52-f58f9d4c603d"
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-2:uuid:certificate/uuid"
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/backend-protocol: HTTP
