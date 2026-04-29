@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stigman-api
+  namespace: stigman
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stigman-api
+  template:
+    metadata:
+      labels:
+        app: stigman-api
+    spec:
+      containers:
+      - name: stigman-api
+        image: nuwcdivnpt/stig-manager:latest
+        ports:
+        - containerPort: 54000
+        env:
+        - name: STIGMAN_DB_HOST
+          value: "mysql.stigman.svc.cluster.local"
+        - name: STIGMAN_DB_PORT
+          value: "3306"
+        - name: STIGMAN_DB_USER
+          value: "stigman"
+        - name: STIGMAN_DB_PASSWORD
+          value: "stigman"
+        - name: STIGMAN_DB_SCHEMA
+          value: "stigman"
+        - name: STIGMAN_OIDC_PROVIDER
+          value: "https://internal-k8s-keycloak-keycloak-82ca930d80-218690444.us-east-2.elb.amazonaws.com/realms/stigman"
+        - name: STIGMAN_API_PORT
+          value: "54000"
+        - name: NODE_TLS_REJECT_UNAUTHORIZED
+          value: "0"
+        - name: STIGMAN_API_BASE_URL
+          value: "https://internal-k8s-stigman-stigmani-334e5a3921-470235457.us-east-2.elb.amazonaws.com"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stigman-svc
+  namespace: stigman
+spec:
+  selector:
+    app: stigman-api
+  ports:
+  - port: 54000
+    targetPort: 54000
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: stigman-ingress
+  namespace: stigman
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-2:969958573430:certificate/f47858d4-8ca2-4557-bb52-f58f9d4c603d"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+spec:
+  ingressClassName: alb
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: stigman-svc
+            port:
+              number: 54000
