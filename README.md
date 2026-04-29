@@ -296,7 +296,7 @@ The MySQL `Service` name is `mysql.stigman.svc.cluster.local` — this is the va
 
 ## Teardown
 
-Run in order to avoid dependency errors. See `scripts/teardown.sh` for the automated version.
+Run in order to avoid dependency errors.
 
 ```bash
 # 1. Delete ALBs (created by LBC, not tracked by Terraform)
@@ -304,7 +304,6 @@ aws elbv2 describe-load-balancers --region us-east-2 \
   --query "LoadBalancers[?contains(LoadBalancerName,'k8s')].LoadBalancerArn" \
   --output text | xargs -n1 aws elbv2 delete-load-balancer --region us-east-2 --load-balancer-arn
 
-sleep 30
 
 # 2. Delete orphaned target groups
 aws elbv2 describe-target-groups --region us-east-2 \
